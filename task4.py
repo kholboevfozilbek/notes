@@ -1,0 +1,1 @@
+# Function cnst(i:int) from file cnst.py takes a single integer as the input parameter and return an integer. You are said the output and input integers are the same. Test this statement with python unittest

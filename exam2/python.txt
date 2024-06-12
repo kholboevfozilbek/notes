@@ -1,0 +1,99 @@
+task1:
+text = "If you need to Link to some research from a website or on social media, We want to encourage you to .Link to a RePEc page instead of directly to the full text."
+
+# Split the text into words
+words = text.split()
+
+# Count the words that start with a capital letter
+count = sum(1 for word in words if word[0].isupper())
+
+print(f"Number of words that start with a capital letter: {count}")
+task2:
+from bs4 import BeautifulSoup
+
+# Read the HTML file
+with open("phases_soften (1).html", "r", encoding="utf-8") as file:
+    html_content = file.read()
+
+# Parse the HTML using BeautifulSoup
+soup = BeautifulSoup(html_content, "html.parser")
+
+# Define the titles for each phase
+phase_titles = {
+    "Deployment": "This is where the application or software is created.",
+    "Development": "Decomposition of major system components into program units.",
+    "Monitoring": "The planning of objectives, risk analysis, engineering or development, and finally review.",
+    "Testing": "Phase 1: Planning\n\nThe initial stage of software development, Planning, involves defining the software’s purpose and scope, much like pinpointing our destination and plotting the best route."
+}
+
+# Extract and display the titles and first paragraphs
+for phase, description in phase_titles.items():
+    print(f"{phase}:\n\n{description}\n")
+    # Find the next paragraph element after the title
+    h2_tag = soup.find("h2", string=phase)
+    if h2_tag:
+        next_paragraph = h2_tag.find_next("p")
+        if next_paragraph:
+            print(next_paragraph.get_text())
+    else:
+        print(f"No h2 tag found for phase: {phase}")
+    print("\n---\n")  # Separator between phases
+task3:
+import pandas as pd
+
+# Load the data
+df = pd.read_csv('covid_19_clean.csv')
+
+# Convert the 'Date' column to datetime format
+df['Date'] = pd.to_datetime(df['Date'])
+
+# Filter the data for June 1, 2020
+df_june_1 = df[df['Date'] == '2020-06-01']
+
+# Find the total number of deaths on June 1, 2020
+total_deaths = df_june_1['Deaths'].sum()
+print(f"Total deaths on June 1, 2020: {total_deaths}")
+
+# Calculate the mean confirmed cases on June 1, 2020
+mean_confirmed = df_june_1['Confirmed'].mean()
+
+# Find the Western Pacific countries with confirmed cases greater than the mean
+western_pacific_countries = df_june_1[(df_june_1['WHO Region'] == 'Western Pacific') & (df_june_1['Confirmed'] > mean_confirmed)]['Country/Region'].unique()
+
+print("Western Pacific countries with confirmed cases greater than the mean on June 1, 2020:")
+for country in western_pacific_countries:
+    print(country)
+task4:
+cnst.py:
+def cnst(i:int) -> int:
+    return i
+test_cnst.py:
+import unittest
+from cnst import cnst
+
+class TestBuiltins(unittest.TestCase):
+    def test_cnst(self):
+        for i in range(-10, 10):
+            self.assertEqual(cnst(i), i, f"Failed for input: {i}")
+
+if __name__ == '__main__':
+    unittest.main()
+
+task1 part2:
+import json
+
+# Load the data from the JSON file
+with open("forecast.json", "r") as file:
+    data = json.load(file)
+
+# Get the lists of times and temperatures
+times = data["hourly"]["time"]
+temperatures = data["hourly"]["temperature_2m"]
+
+# Find the index of the desired time
+try:
+    index = times.index("2024-06-10T04:00")
+    # Print the corresponding temperature
+    print(f"The temperature at '2024-06-10T04:00' is {temperatures[index]}°C")
+except ValueError:
+    print("The time '2024-06-10T04:00' was not found in the data.")
